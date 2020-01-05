@@ -1,0 +1,32 @@
+%semnal dreptunghiular x de perioada 40s, durata 21s
+T=40
+w0=(2*pi)/T
+t=0:0.1:100
+x=square(w0*t)
+N=25
+C=zeros(size(2*N+1))
+x2=0
+%calculul coeficientilor 
+for k=-N:N
+    if k~=0
+        fun2=@(t)  1.*exp(-1j*k*w0*t)      %de la 0 la 21 semnalul ia valoarea 1
+        fun3=@(t)(-1).*exp(-1j*k*w0*t)     %de la 21 la 40 semnalul ia valoarea -1
+        C(k+N+1)=1/T*(integral(fun2, 0, 21)+integral(fun3, 21, 40))
+        re=real(C(k+N+1))
+        im=imag(C(k+N+1))
+        C(k+N+1)=re+1j*im
+        x2=x2+real(C(k+N+1)*exp(1j*k*w0*t))
+    end
+end
+%reprezantarea spectrului de amplitudini
+subplot(2, 1, 1)
+stem((-N:N), abs(C)); title('Spectrul de amplitudini');
+subplot(2, 1, 2); 
+plot(t, x,'-')          %semnalul initial
+hold on
+plot(t, x2, '.')        %semnalul reconstruit
+title('Semnalul initial/Semnalul reconstruit');
+hold off
+
+%se observa ca spectrul de amplitudini este simetric fata de 0
+%valoarea maxima se gaseste la +-1 si este 0.6347
