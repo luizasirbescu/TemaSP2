@@ -2,7 +2,7 @@
 T=40
 w0=(2*pi)/T
 t=0:0.1:100
-x=square(w0*t)
+x=square(w0*t,21*100/40)
 N=25
 C=zeros(size(2*N+1))
 x2=0
